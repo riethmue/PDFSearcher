@@ -1,0 +1,49 @@
+﻿<Window x:Class="PDFSearcher.LibrarySearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PDFSearcher"
+        mc:Ignorable="d"
+        Title="Library Search" Height="500" Width="525"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Background="WhiteSmoke"
+        >
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <ProgressBar IsIndeterminate="True" VerticalAlignment="Top" Visibility="{Binding ProgressbarVisibility}"/>
+            <Border Margin="5,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="DarkGray" BorderThickness="1">
+                <StackPanel VerticalAlignment="Top"  Orientation="Horizontal">
+                    <Label Content="Library path:" Width="90"/>
+                    <TextBox Text="{Binding Path=LibraryPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="10,0,0,0" Width="300" VerticalAlignment="Center" MaxLines="1"  />
+                    <Button Margin="5,0,0,0" Height="Auto" Width="50" Content="Browse..." Click="BrowseButton_Click" />
+                </StackPanel>
+            </Border>
+            <Border Margin="5,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="DarkGray" BorderThickness="1">
+                <StackPanel VerticalAlignment="Top"  Orientation="Horizontal">
+                    <Label Width="90" Content="Search words:"/>
+                    <TextBox Text="{Binding Path=SearchWords, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="10,0,0,0" Width="300" VerticalAlignment="Center" MaxLines="1" />
+                    <Button Width="50" Margin="5,0,0,0" Height="Auto" Content="Search" Click="SearchWords_Click" />
+                </StackPanel>
+            </Border>
+            <ListView   SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding Path=ResultListView, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" Height="360" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5,5,5" >
+                <ListView.View >
+                    <GridView >
+                        <GridViewColumn Header="Path" Width="400" DisplayMemberBinding="{Binding FilePath}"/>
+                        <GridViewColumn Header="Frequency" Width="100" DisplayMemberBinding="{Binding Frequency}"/>
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Open directory" Click="OpenDirectory_Click"/>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+        </StackPanel>
+    </Grid>
+</Window>
